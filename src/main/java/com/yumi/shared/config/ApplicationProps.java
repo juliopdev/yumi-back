@@ -10,7 +10,7 @@ import java.util.List;
 public class ApplicationProps {
 
   private final Jwt jwt = new Jwt();
-  private final Cors cors = new Cors();
+  // private final Cors cors = new Cors();
   private final Cloudinary cloudinary = new Cloudinary();
 
   @Data
@@ -20,10 +20,10 @@ public class ApplicationProps {
     private List<String> roles;
   }
 
-  @Data
-  public static class Cors {
-    private List<String> allowedOrigins;
-  }
+  // @Data
+  // public static class Cors {
+  //   private List<String> allowedOrigins;
+  // }
 
   @Data
   public static class Cloudinary {
