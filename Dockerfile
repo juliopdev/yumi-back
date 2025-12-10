@@ -27,4 +27,4 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json
 
 EXPOSE 8080
 ENV PORT=8080
-ENTRYPOINT ["sh", "-c", "java -jar /app/app.jar --server.port=${PORT}"]
+ENTRYPOINT ["sh", "-c", "java -DAES256_KEY=${AES256_KEY} -jar /app/app.jar --server.port=${PORT}"]
