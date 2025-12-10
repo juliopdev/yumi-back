@@ -7,6 +7,8 @@ import com.yumi.chatbot.application.dto.ChatResponse;
 import com.yumi.chatbot.domain.ChatbotAI;
 import com.yumi.chatbot.domain.Intent;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class ProductListHandler {
   private final ChatResponseFactory factory;
 
   public ChatResponse handle(ChatbotAI chat, String msg) {
-    List<ProductResponse> products = productService.randomVisible(10);
+    List<ProductResponse> products = productService.getAll(Pageable.ofSize(10)).getContent();
     if (products.isEmpty()) {
       return factory.build(chat,
           "Por ahora no tenemos productos en stock.",

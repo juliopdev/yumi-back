@@ -22,10 +22,10 @@ public class IntentResolver {
   static {
     KEYWORDS.put(Intent.GREETING, "hola buenas buenos dias tardes noches");
     KEYWORDS.put(Intent.PRODUCT_LIST,
-        "qué productos que productos tenemos disponibles catálogo lista completa todos");
+        "qué productos que productos tenemos disponibles catálogo lista completa todos en stock hoy actualmente");
     KEYWORDS.put(Intent.RECOMMENDATION,
         "recomienda sugiere qué producto me recomiendas qué me sugieres qué elegir");
-    KEYWORDS.put(Intent.PRODUCT_AVAILABILITY, "tienes hay disponible");
+    KEYWORDS.put(Intent.PRODUCT_AVAILABILITY, "que tienes hay disponible");
     KEYWORDS.put(Intent.PURCHASE_INTENT, "comprar quiero necesito busco");
     KEYWORDS.put(Intent.ORDER_STATUS, "pedido estado número");
     KEYWORDS.put(Intent.DELIVERY_TIME, "entrega tiempo cuando");

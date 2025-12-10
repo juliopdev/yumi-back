@@ -56,7 +56,6 @@ public class ChatbotService {
     chat.getOrCreateContext().addUserMessage(req.message());
 
     try {
-      System.out.println("🔍 Intento detectado: " + intent);
       return switch (intent) {
         case GREETING -> greetingHandler.handle(chat, req.message());
         case PRODUCT_LIST -> productListHandler.handle(chat, req.message());
