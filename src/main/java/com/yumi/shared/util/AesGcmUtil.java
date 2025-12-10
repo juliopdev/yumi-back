@@ -1,9 +1,9 @@
 package com.yumi.shared.util;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -15,16 +15,19 @@ public final class AesGcmUtil {
   private static final SecretKey KEY = loadKey();
 
   private static SecretKey loadKey() {
-    try {
-      KeyGenerator kg = KeyGenerator.getInstance("AES");
-      kg.init(256);
-      return kg.generateKey();
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
+    String hex = System.getProperty("AES256_KEY");
+    if (hex == null || hex.length() != 64) {
+      throw new IllegalStateException("AES256_KEY no existe o no es 256 bits");
     }
+    byte[] keyBytes = new byte[32];
+    for (int i = 0; i < 32; i++) {
+      keyBytes[i] = (byte) Integer.parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+    }
+    return new SecretKeySpec(keyBytes, "AES");
   }
 
   public static String encrypt(String plain) {
+    if (plain == null) return null;
     try {
       byte[] iv = new byte[IV];
       new SecureRandom().nextBytes(iv);
@@ -44,6 +47,7 @@ public final class AesGcmUtil {
   }
 
   public static String decrypt(String encoded) {
+    if (encoded == null) return null;
     try {
       byte[] withIv = Base64.getDecoder().decode(encoded);
       byte[] iv = new byte[IV];

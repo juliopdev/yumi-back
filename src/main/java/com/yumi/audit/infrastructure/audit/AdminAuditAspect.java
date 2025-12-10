@@ -1,8 +1,9 @@
 package com.yumi.audit.infrastructure.audit;
 
-import com.yumi.audit.application.mapper.AdminAuditLogMapper;
+import com.yumi.audit.domain.AdminAuditLog;
 import com.yumi.audit.infrastructure.persistence.MongoAdminAuditLogRepository;
 import com.yumi.auth.domain.UserRole;
+import com.yumi.shared.util.AesGcmUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,7 +34,6 @@ public class AdminAuditAspect {
 
   @Around("""
       (@annotation(org.springframework.web.bind.annotation.RequestMapping)
-       || @annotation(org.springframework.web.bind.annotation.GetMapping)
        || @annotation(org.springframework.web.bind.annotation.PostMapping)
        || @annotation(org.springframework.web.bind.annotation.PutMapping)
        || @annotation(org.springframework.web.bind.annotation.PatchMapping)
@@ -55,10 +55,14 @@ public class AdminAuditAspect {
 
     HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     String action = req.getMethod() + " " + req.getRequestURI();
-
+    String actionEnc = AesGcmUtil.encrypt(action);
     Object result = joinPoint.proceed();
 
-    repository.save(AdminAuditLogMapper.toEntity(auth.getName(), role, action));
+    repository.save(AdminAuditLog.builder()
+        .adminEmail(auth.getName())
+        .role(role)
+        .actionEnc(actionEnc)
+        .build());
 
     return result;
   }

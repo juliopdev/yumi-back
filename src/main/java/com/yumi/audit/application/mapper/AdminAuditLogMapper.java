@@ -3,6 +3,7 @@ package com.yumi.audit.application.mapper;
 import java.time.Instant;
 import com.yumi.audit.application.dto.AdminAuditLogResponse;
 import com.yumi.audit.domain.AdminAuditLog;
+import com.yumi.shared.util.AesGcmUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,11 +23,14 @@ public final class AdminAuditLogMapper {
   }
 
   public static AdminAuditLogResponse toResponse(AdminAuditLog log) {
+    String plain = log.getActionEnc() != null
+        ? AesGcmUtil.decrypt(log.getActionEnc())
+        : "[SIN ACCION]";
     return new AdminAuditLogResponse(
         log.getId(),
         log.getAdminEmail(),
         log.getRole(),
-        log.getAction(),
+        plain,
         log.getCreatedAt());
   }
 }
